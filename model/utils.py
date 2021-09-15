@@ -14,7 +14,9 @@ import random
 ##Dataloader class
 
 class TrajectoryDataset(Dataset):
-    """Dataloder for the Trajectory datasets"""
+    """Dataloder for the Trajectory datasets
+    Modified from https://github.com/alexmonti19/dagnet"""
+    
     def __init__(
         self, data_dir, obs_len=11, pred_len=120, skip=1,step=10,
         min_agent=0, delim=' '):
