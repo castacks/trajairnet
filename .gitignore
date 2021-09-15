@@ -1,2 +1,5 @@
+__pycache__/
+model/__pycache__/
+
 dataset/
 saved_models/
