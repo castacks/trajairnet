@@ -29,11 +29,18 @@ def train():
     parser.add_argument('--tcn_layers',type=int,default=2)
     parser.add_argument('--tcn_kernels',type=int,default=4)
 
+    parser.add_argument('--num_context_input_c',type=int,default=2)
+    parser.add_argument('--num_context_output_c',type=int,default=7)
+    parser.add_argument('--cnn_kernels',type=int,default=2)
 
     parser.add_argument('--gat_heads',type=int, default=16)
-    parser.add_argument('--graph_hidden',type=int,default=8)
+    parser.add_argument('--graph_hidden',type=int,default=256)
     parser.add_argument('--dropout',type=float,default=0.05)
     parser.add_argument('--alpha',type=float,default=0.2)
+    parser.add_argument('--cvae_hidden',type=int,default=128)
+    parser.add_argument('--cvae_channel_size',type=int,default=128)
+    parser.add_argument('--cvae_layers',type=int,default=2)
+    parser.add_argument('--mlp_layer',type=int,default=32)
 
     parser.add_argument('--lr',type=float,default=0.0001)
 
@@ -64,25 +71,16 @@ def train():
     loader_train = DataLoader(dataset_train,batch_size=1,num_workers=4,shuffle=True,collate_fn=seq_collate)
     loader_test = DataLoader(dataset_test,batch_size=1,num_workers=4,shuffle=True,collate_fn=seq_collate)
 
-    input_channels = args.input_channels
-    n_classes = int(args.preds/args.preds_step)
-    channel_sizes= [args.tcn_channel_size]*args.tcn_layers
-    channel_sizes.append(n_classes)
-    kernel_size = args.tcn_kernels
-    dropout = args.dropout
-    lr = args.lr
-    graph_hidden = args.graph_hidden
-    n_heads = args.gat_heads 
-    alpha = args.alpha
+  
 
-    model = TrajAirNet(input_channels, n_classes, channel_sizes, kernel_size=kernel_size, dropout=dropout,n_heads=n_heads,alpha=alpha)
+    model = TrajAirNet(args)
     model.to(device)
 
     ##Resume
     # checkpoint = torch.load('model_11.pt',map_location=torch.device('cpu'))
     # model.load_state_dict(checkpoint['model_state_dict'])
 
-    optimizer = optim.Adam(model.parameters(),lr=lr)
+    optimizer = optim.Adam(model.parameters(),lr=args.lr)
 
     num_batches = len(loader_train)
  
@@ -96,8 +94,6 @@ def train():
         tot_batch_count = 0
         tot_loss = 0
         for batch in tqdm(loader_train):
-            if tot_batch_count > 16:
-                break
             batch_count += 1
             tot_batch_count += 1
             batch = [tensor.to(device) for tensor in batch]

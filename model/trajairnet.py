@@ -10,17 +10,38 @@ from model.utils import acc_to_abs
 
 
 class TrajAirNet(nn.Module):
-    def __init__(self, input_size, output_size, num_channels, kernel_size, dropout,n_heads,alpha,social=True,context=True):
+    def __init__(self, args):
         super(TrajAirNet, self).__init__()
 
+        input_size = args.input_channels
+        n_classes = int(args.preds/args.preds_step)
+        num_channels= [args.tcn_channel_size]*args.tcn_layers
+        num_channels.append(n_classes)
+        tcn_kernel_size = args.tcn_kernels
+        dropout = args.dropout
+        lr = args.lr
         
-        self.tcn_encoder_x = TemporalConvNet(input_size, num_channels, kernel_size=kernel_size, dropout=dropout)
-        self.tcn_encoder_y = TemporalConvNet(input_size, num_channels, kernel_size=kernel_size, dropout=dropout)
-        self.cvae = CVAE(encoder_layer_sizes = [144,128,128],latent_size = 128, decoder_layer_sizes = [128,96,96],conditional=True, num_labels= 278)
-        self.gat = GAT( nin=139, nhid = 256, nout = 139,alpha = alpha,nheads = n_heads)
-        self.linear_decoder = nn.Linear(32,12)
-        self.context_conv = nn.Conv1d(in_channels=2, out_channels=1, kernel_size=2)
-        self.context_linear = nn.Linear(10,7)
+        graph_hidden = args.graph_hidden
+        gat_in = n_classes*args.obs+args.num_context_output_c
+        gat_out = n_classes*args.obs+args.num_context_output_c
+        n_heads = args.gat_heads 
+        alpha = args.alpha
+        
+        cvae_encoder = [n_classes*n_classes]
+        for layer in range(args.cvae_layers):
+            cvae_encoder.append(args.cvae_channel_size)
+        cvae_decoder = [args.cvae_channel_size]*args.cvae_layers
+        cvae_decoder.append(input_size*args.mlp_layer)
+
+     
+
+        self.tcn_encoder_x = TemporalConvNet(input_size, num_channels, kernel_size=tcn_kernel_size, dropout=dropout)
+        self.tcn_encoder_y = TemporalConvNet(input_size, num_channels, kernel_size=tcn_kernel_size, dropout=dropout)
+        self.cvae = CVAE(encoder_layer_sizes = cvae_encoder,latent_size = args.cvae_hidden, decoder_layer_sizes =cvae_decoder,conditional=True, num_labels= gat_out+gat_in)
+        self.gat = GAT( nin=gat_in, nhid = graph_hidden, nout = gat_out, alpha = alpha, nheads = n_heads)
+        self.linear_decoder = nn.Linear(args.mlp_layer,n_classes)
+        self.context_conv = nn.Conv1d(in_channels=args.num_context_input_c, out_channels=1, kernel_size=args.cnn_kernels)
+        self.context_linear = nn.Linear(args.obs-1,args.num_context_output_c)
         self.relu = nn.ReLU()
         self.init_weights()
 

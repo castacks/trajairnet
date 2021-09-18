@@ -89,8 +89,6 @@ def test(model,loader_test,device):
     tot_batch = 0
     for batch in tqdm(loader_test):
         tot_batch += 1
-        if tot_batch>8:
-            break 
         batch = [tensor.to(device) for tensor in batch]
 
         obs_traj_all , pred_traj_all, obs_traj_rel_all, pred_traj_rel_all, context, seq_start  = batch
