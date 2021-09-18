@@ -1,6 +1,6 @@
 __pycache__/
 model/__pycache__/
-
+adsb_preprocess/__pycache__/
 dataset/*
 !dataset/.gitkeep
 saved_models/*
