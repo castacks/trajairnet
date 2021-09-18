@@ -12,27 +12,21 @@ from model.utils import acc_to_abs
 class TrajAirNet(nn.Module):
     def __init__(self, input_size, output_size, num_channels, kernel_size, dropout,n_heads,alpha,social=True,context=True):
         super(TrajAirNet, self).__init__()
-#         self.pec_encoder_x = L2Dist1d(n_ch=2,n_ker=200,ker_size=4)
-#         self.pec_encoder_y = L2Dist1d(n_ch=2,n_ker=50,ker_size=4)
+
+        
         self.tcn_encoder_x = TemporalConvNet(input_size, num_channels, kernel_size=kernel_size, dropout=dropout)
         self.tcn_encoder_y = TemporalConvNet(input_size, num_channels, kernel_size=kernel_size, dropout=dropout)
-        self.cvae = CVAE(encoder_layer_sizes = [144,128,128],latent_size = 128,decoder_layer_sizes = [128,96,96],conditional=True,num_labels=278)
-        self.gat = GAT(nin=139,nhid=256, nout = 139,alpha = alpha,nheads = n_heads)
-        self.linear_encoder = nn.Linear(8,64)
-        self.linear_decoder_x = nn.Linear(32,12)
-        self.linear_decoder_y = nn.Linear(48,12)
+        self.cvae = CVAE(encoder_layer_sizes = [144,128,128],latent_size = 128, decoder_layer_sizes = [128,96,96],conditional=True, num_labels= 278)
+        self.gat = GAT( nin=139, nhid = 256, nout = 139,alpha = alpha,nheads = n_heads)
+        self.linear_decoder = nn.Linear(32,12)
         self.context_conv = nn.Conv1d(in_channels=2, out_channels=1, kernel_size=2)
         self.context_linear = nn.Linear(10,7)
         self.relu = nn.ReLU()
-        self.output_relu = nn.ReLU()
-        self.bn1 = nn.BatchNorm1d(128)
         self.init_weights()
 
     def init_weights(self):
-        self.linear_encoder.weight.data.normal_(0, 0.05)
-        self.linear_decoder_x.weight.data.normal_(0, 0.05)
+        self.linear_decoder.weight.data.normal_(0, 0.05)
         self.context_linear.weight.data.normal_(0, 0.05)
-        self.linear_decoder_y.weight.data.normal_(0, 0.05)   
         self.context_conv.weight.data.normal_(0, 0.1)
         
     def forward(self, x, y, adj,context,sort=False):        
@@ -86,7 +80,7 @@ class TrajAirNet(nn.Module):
             H_yy, means,log_var, z = self.cvae(H_y,H_x)
 
             H_yy =  torch.reshape(H_yy, (3, -1))
-            recon_y_x = (self.linear_decoder_x(H_yy))
+            recon_y_x = (self.linear_decoder(H_yy))
             recon_y_x = torch.unsqueeze(recon_y_x,dim=0)
             recon_y_x = acc_to_abs(recon_y_x,x[:,:,agent][:,:,None])    
 
@@ -135,7 +129,7 @@ class TrajAirNet(nn.Module):
             H_yy = self.cvae.inference(z,H_x)
             H_yy =  torch.reshape(H_yy, (3, -1))
 
-            recon_y_x = (self.linear_decoder_x(H_yy)) 
+            recon_y_x = (self.linear_decoder(H_yy)) 
             recon_y_x = torch.unsqueeze(recon_y_x,dim=0)
             recon_y_x = acc_to_abs(recon_y_x,x[:,:,agent][:,:,None])    
 

@@ -7,16 +7,38 @@ import torch
 from torch.utils.data import DataLoader
 
 from model.trajairnet import TrajAirNet
-from model.utils import ade, fde, TrajectoryDataset
+from model.utils import ade, fde, TrajectoryDataset, seq_collate
 
 def main():
     
-    parser=argparse.ArgumentParser(description='Train TrajAirNet model')
+    parser=argparse.ArgumentParser(description='Test TrajAirNet model')
     parser.add_argument('--dataset_folder',type=str,default='/dataset/')
     parser.add_argument('--dataset_name',type=str,default='7days1')
+
     parser.add_argument('--obs',type=int,default=11)
     parser.add_argument('--preds',type=int,default=120)
     parser.add_argument('--preds_step',type=int,default=10)
+
+    parser.add_argument('--input_channels',type=int,default=3)
+    parser.add_argument('--tcn_channel_size',type=int,default=256)
+    parser.add_argument('--tcn_layers',type=int,default=2)
+    parser.add_argument('--tcn_kernels',type=int,default=4)
+
+
+    parser.add_argument('--gat_heads',type=int, default=16)
+    parser.add_argument('--graph_hidden',type=int,default=8)
+    parser.add_argument('--dropout',type=float,default=0.05)
+    parser.add_argument('--alpha',type=float,default=0.2)
+
+    parser.add_argument('--lr',type=float,default=0.0001)
+
+
+    parser.add_argument('--epoch',type=int, default=1)
+    parser.add_argument('--delim',type=str,default=' ')
+    parser.add_argument('--evaluate', type=bool, default=True)
+    parser.add_argument('--save_model', type=bool, default=True)
+
+    parser.add_argument('--model_dir', type=str , default="/saved_models/")
     
     args=parser.parse_args()
 
@@ -48,7 +70,18 @@ def main():
 
     model = TrajAirNet(input_channels, n_classes, channel_sizes, kernel_size=kernel_size, dropout=dropout,n_heads=n_heads,alpha=alpha)
     model.to(device)
-    
+
+    model_path =  os.getcwd() + args.model_dir + "model_" + args.dataset_name + "_" + str(args.epoch) + ".pt"
+
+
+    checkpoint = torch.load(model_path, map_location=device)
+    model.load_state_dict(checkpoint['model_state_dict'])
+
+    test_ade_loss, test_fde_loss = test(model,loader_test,device)
+
+    print("Test ADE Loss: ",test_ade_loss,"Test FDE Loss: ",test_fde_loss)
+
+
 
 def test(model,loader_test,device):
     tot_ade_loss = 0

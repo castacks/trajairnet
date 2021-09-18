@@ -121,7 +121,8 @@ def train():
                 loss_batch = 0 
                 batch_count = 0
 
-        
+        print("EPOCH: ",epoch,"Train Loss: ",loss)
+
         if args.save_model:  
             loss = tot_loss/tot_batch_count
             model_path = os.getcwd() + args.model_pth + "model_" + args.dataset_name + "_" + str(epoch) + ".pt"
@@ -139,7 +140,7 @@ def train():
             model.eval()
             test_ade_loss, test_fde_loss = test(model,loader_test,device)
 
-        print("EPOCH: ",epoch,"Train Loss: ",loss,"Test ADE Loss: ",test_ade_loss,"Test FDE Loss: ",test_fde_loss)
+            print("EPOCH: ",epoch,"Train Loss: ",loss,"Test ADE Loss: ",test_ade_loss,"Test FDE Loss: ",test_fde_loss)
 
 if __name__=='__main__':
 
