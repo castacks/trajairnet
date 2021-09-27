@@ -45,7 +45,7 @@ def train():
     parser.add_argument('--lr',type=float,default=0.001)
 
 
-    parser.add_argument('--max_epoch',type=int, default=50)
+    parser.add_argument('--total_epochs',type=int, default=50)
     parser.add_argument('--delim',type=str,default=' ')
     parser.add_argument('--evaluate', type=bool, default=True)
     parser.add_argument('--save_model', type=bool, default=True)
@@ -71,8 +71,6 @@ def train():
     loader_train = DataLoader(dataset_train,batch_size=1,num_workers=4,shuffle=True,collate_fn=seq_collate)
     loader_test = DataLoader(dataset_test,batch_size=1,num_workers=4,shuffle=True,collate_fn=seq_collate)
 
-  
-
     model = TrajAirNet(args)
     model.to(device)
 
@@ -86,7 +84,7 @@ def train():
  
     print("Starting Training....")
 
-    for epoch in range(1, args.max_epoch+1):
+    for epoch in range(1, args.total_epochs+1):
 
         model.train()
         loss_batch = 0 

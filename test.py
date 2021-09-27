@@ -14,23 +14,30 @@ def main():
     parser=argparse.ArgumentParser(description='Test TrajAirNet model')
     parser.add_argument('--dataset_folder',type=str,default='/dataset/')
     parser.add_argument('--dataset_name',type=str,default='7days1')
+    parser.add_argument('--epoch',type=int,required=True)
 
     parser.add_argument('--obs',type=int,default=11)
     parser.add_argument('--preds',type=int,default=120)
     parser.add_argument('--preds_step',type=int,default=10)
-
+    
+    ##Network params
     parser.add_argument('--input_channels',type=int,default=3)
     parser.add_argument('--tcn_channel_size',type=int,default=256)
     parser.add_argument('--tcn_layers',type=int,default=2)
     parser.add_argument('--tcn_kernels',type=int,default=4)
 
+    parser.add_argument('--num_context_input_c',type=int,default=2)
+    parser.add_argument('--num_context_output_c',type=int,default=7)
+    parser.add_argument('--cnn_kernels',type=int,default=2)
 
     parser.add_argument('--gat_heads',type=int, default=16)
-    parser.add_argument('--graph_hidden',type=int,default=8)
+    parser.add_argument('--graph_hidden',type=int,default=256)
     parser.add_argument('--dropout',type=float,default=0.05)
     parser.add_argument('--alpha',type=float,default=0.2)
-
-
+    parser.add_argument('--cvae_hidden',type=int,default=128)
+    parser.add_argument('--cvae_channel_size',type=int,default=128)
+    parser.add_argument('--cvae_layers',type=int,default=2)
+    parser.add_argument('--mlp_layer',type=int,default=32)
 
     parser.add_argument('--delim',type=str,default=' ')
 
@@ -52,19 +59,7 @@ def main():
     loader_test = DataLoader(dataset_test,batch_size=1,num_workers=4,shuffle=True,collate_fn=seq_collate)
 
     ##Load model
-
-    input_channels = args.input_channels
-    n_classes = int(args.preds/args.preds_step)
-    channel_sizes= [args.tcn_channel_size]*args.tcn_layers
-    channel_sizes.append(n_classes)
-    kernel_size = args.tcn_kernels
-    dropout = args.dropout
-    lr = args.lr
-    graph_hidden = args.graph_hidden
-    n_heads = args.gat_heads 
-    alpha = args.alpha
-
-    model = TrajAirNet(input_channels, n_classes, channel_sizes, kernel_size=kernel_size, dropout=dropout,n_heads=n_heads,alpha=alpha)
+    model = TrajAirNet(args)
     model.to(device)
 
     model_path =  os.getcwd() + args.model_dir + "model_" + args.dataset_name + "_" + str(args.epoch) + ".pt"

@@ -19,7 +19,6 @@ class TrajAirNet(nn.Module):
         num_channels.append(n_classes)
         tcn_kernel_size = args.tcn_kernels
         dropout = args.dropout
-        lr = args.lr
         
         graph_hidden = args.graph_hidden
         gat_in = n_classes*args.obs+args.num_context_output_c
