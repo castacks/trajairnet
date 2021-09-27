@@ -2,7 +2,7 @@
 
 This repository contains the code for the paper submitted to ICRA 2022. 
 
-[Predicting  Like  A  Pilot:  Dataset  and  Method  to  Predict  Socially-Aware Aircraft  Trajectories  in  Non-Towered  Terminal  Airspace]() 
+[**Predicting Like A Pilot: Dataset and Method to Predict  Socially-Aware Aircraft Trajectories in Non-Towered Terminal Airspace]() 
 
 [Jay Patrikar](https://jaypatrikar.me/), [Brady Moon](https://bradymoon.com/), [Jean Oh](https://www.cs.cmu.edu/~./jeanoh/) and [Sebastian Scherer](https://www.ri.cmu.edu/ri-faculty/sebastian-scherer/).
 
@@ -62,7 +62,7 @@ Optional arguments can be given as following:
 
 ###  Model Testing
 
-For training data we can choose between the 4 subsets of data labelled 7days1, 7days1, 7days1, 7days1 or the entire dataset 111_days. For example, to test with 7days1 use:  
+For training data we can choose between the 4 subsets of data labelled 7days1, 7days2, 7days3, 7days4 or the entire dataset 111_days. For example, to test with 7days1 use:  
 
 `python test.py --dataset_name 7days1 --epoch 1`
 
