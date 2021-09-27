@@ -110,6 +110,11 @@ This repository also contains untilities to process raw data from TrajAir datase
 
 `python adsb_preprocess/process.py --dataset_name 7days1`
 
+Optional arguments can be given as following:
+
+- `--dataset_folder` sets the working directory for data. Default is current working directory (default = `/dataset/`).  
+- `--dataset_name` sets the data block to use (default = `7days1`).
+- `--weather_folder` directory with weather data (default = `weather_data`).
 
 ## Cite
 If you have any questions, please contact [jaypat@cmu.edu](mailto:jaypat@cmu.edu) or 
