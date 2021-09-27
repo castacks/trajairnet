@@ -42,7 +42,7 @@ def train():
     parser.add_argument('--cvae_layers',type=int,default=2)
     parser.add_argument('--mlp_layer',type=int,default=32)
 
-    parser.add_argument('--lr',type=float,default=0.0001)
+    parser.add_argument('--lr',type=float,default=0.001)
 
 
     parser.add_argument('--max_epoch',type=int, default=50)

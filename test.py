@@ -30,13 +30,9 @@ def main():
     parser.add_argument('--dropout',type=float,default=0.05)
     parser.add_argument('--alpha',type=float,default=0.2)
 
-    parser.add_argument('--lr',type=float,default=0.0001)
 
 
-    parser.add_argument('--epoch',type=int, default=1)
     parser.add_argument('--delim',type=str,default=' ')
-    parser.add_argument('--evaluate', type=bool, default=True)
-    parser.add_argument('--save_model', type=bool, default=True)
 
     parser.add_argument('--model_dir', type=str , default="/saved_models/")
     
