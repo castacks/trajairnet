@@ -9,7 +9,7 @@ This repository contains the code for the paper submitted to ICRA 2022.
 
 ## Brief Overview [[Video]]()
 
-![ha](images/Fig1v4.pdf)
+![Figure Overview](images/Fig1v4.png)
 
 Pilots  operating  aircraft  in  un-towered  airspacerely  on  their  situational  awareness  and  prior  knowledge  topredict the future trajectories of other agents. These predictionsare conditioned on the past trajectories of other agents, agent-agent  social  interactions  and  environmental  context  such  as airport  location  and  weather.  This  paper  provides  a  dataset, TrajAir, that captures this behaviour in a non-towered terminal airspace around a regional airport. We also present a baseline socially-aware trajectory prediction algorithm, TrajAirNet, that uses  the  dataset  to  predict  the  trajectories  of  all  agents.  The dataset  is  collected  for  111  days  over  8  months  and  contains ADS-B transponder data along with the corresponding METAR weather data. The data is processed to be used as a benchmark with  other  publicly  available  social  navigation  datasets.  To the  best  of  authors’  knowledge,  this  is  the  first  3D  social aerial  navigation  dataset  thus  introducing  social  navigationfor  autonomous  aviation.TrajAirNet combines  state-of-the-artmodules  in  social  navigation  to  provide  predictions  in  a  static environment with a dynamic context. 
 
