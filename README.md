@@ -2,7 +2,7 @@
 
 This repository contains the code for the paper submitted to ICRA 2022. 
 
-[**Predicting Like A Pilot: Dataset and Method to Predict Socially-Aware Aircraft Trajectories in Non-Towered Terminal Airspace**]() 
+[**Predicting Like A Pilot: Dataset and Method to Predict Socially-Aware Aircraft Trajectories in Non-Towered Terminal Airspace**](https://arxiv.org/abs/2109.15158) 
 
 [Jay Patrikar](https://jaypatrikar.me/), [Brady Moon](https://bradymoon.com/), [Jean Oh](https://www.cs.cmu.edu/~./jeanoh/) and [Sebastian Scherer](https://www.ri.cmu.edu/ri-faculty/sebastian-scherer/).
 
@@ -122,6 +122,14 @@ If you have any questions, please contact [jaypat@cmu.edu](mailto:jaypat@cmu.edu
 
 If you find this repository useful for your research, please cite the following paper:
 
-```add bib
+```
+@misc{patrikar2021predicting,
+      title={Predicting Like A Pilot: Dataset and Method to Predict Socially-Aware Aircraft Trajectories in Non-Towered Terminal Airspace}, 
+      author={Jay Patrikar and Brady Moon and Jean Oh and Sebastian Scherer},
+      year={2021},
+      eprint={2109.15158},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO}
+}
 ```
 
