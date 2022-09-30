@@ -123,13 +123,15 @@ If you have any questions, please contact [jaypat@cmu.edu](mailto:jaypat@cmu.edu
 If you find this repository useful for your research, please cite the following paper:
 
 ```
-@misc{patrikar2021predicting,
-      title={Predicting Like A Pilot: Dataset and Method to Predict Socially-Aware Aircraft Trajectories in Non-Towered Terminal Airspace}, 
-      author={Jay Patrikar and Brady Moon and Jean Oh and Sebastian Scherer},
-      year={2021},
-      eprint={2109.15158},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
+@inproceedings{patrikar2022trajair,
+  title = {Predicting Like {A} Pilot: Dataset and Method to Predict Socially-Aware Aircraft Trajectories in Non-Towered Terminal Airspace},
+  author = {Patrikar, Jay and Moon, Brady and Oh, Jean and Scherer, Sebastian},
+  booktitle = {International Conference on Robotics and Automation (ICRA)},
+  year = {2022},
+  doi = {10.1109/ICRA46639.2022.9811972},
+  url = {https://arxiv.org/pdf/2109.15158.pdf},
+  code = {https://github.com/castacks/trajairnet},
+  video = {https://youtu.be/elAQXrxB2gw}
 }
 ```
 
